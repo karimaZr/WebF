@@ -10,17 +10,16 @@ services:
     ports:
       - "3306:3306"
 
-
   backend:
     build:
-      context: ./react-backend
+      context: ./dental
     ports:
       - "8083:8083"
     depends_on:
       mysql:
         condition: service_started
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dents
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/backend-final
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD:
     healthcheck:
@@ -31,7 +30,7 @@ services:
 
   frontend:
     build:
-      context: ./dental
+      context: ./react-front
     ports:
       - "3000:3000"
     depends_on:
