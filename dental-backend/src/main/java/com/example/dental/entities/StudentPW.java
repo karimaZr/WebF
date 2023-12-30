@@ -19,18 +19,32 @@ import java.util.List;
 public class StudentPW {
     @EmbeddedId
     private StudentPWPk id;
-    @JoinColumn(name = "student", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne
+    @JsonIgnoreProperties("studentPWS")
     private Student student;
-    @JoinColumn(name = "pw", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "pw_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne
     private PW pw;
-
+    @Lob
+    @Column(name = "imageFront", columnDefinition = "LONGBLOB")
+    private byte[]imageFront;
+    @Lob
+    @Column(name = "imageSide", columnDefinition = "LONGBLOB")
+    private byte[] imageSide;
+    private  float alpha1;
+    private  float alpha2;
+    private  float alpha3;
+    private  float beta1;
+    private  float beta2;
+    private  float beta3;
+    private float note;
     private String time;
     @Temporal(TemporalType.DATE)
     private Date date;
-@OneToMany(mappedBy = "studentPW")
-private List<Image> images;
+
+
+
 
 
 }

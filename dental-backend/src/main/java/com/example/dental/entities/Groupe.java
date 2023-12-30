@@ -24,7 +24,7 @@ public class Groupe {
     private Professor professor;
     @OneToMany(mappedBy = "groupe")
     private List<Student> students;
-    @ManyToMany(mappedBy = "groupes")
-    private List<PW> pwList;
+    @ManyToMany
+    private List<PW> pws;
 
 }

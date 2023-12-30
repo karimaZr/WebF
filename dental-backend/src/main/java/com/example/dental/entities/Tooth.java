@@ -16,6 +16,5 @@ public class Tooth {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @OneToMany(mappedBy = "tooth")
-    private List<PW> pwList;
+
 }

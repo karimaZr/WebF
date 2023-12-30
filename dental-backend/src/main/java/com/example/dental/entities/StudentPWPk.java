@@ -12,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 public class StudentPWPk implements Serializable {
-    private int student;
-    private int pw;
+    private int student_id;
+    private int pw_id;
 }

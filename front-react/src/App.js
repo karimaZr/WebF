@@ -13,20 +13,23 @@ import {
 import AddProf from "./component/Admin/AddProfesseur";
 import EditProf from "./component/Admin/EditProfesseur";
 import ProfPofile from "./component/Admin/ProfesseurProfile";
-import Footer from "./component/common/Footer";
-import home_admin from "./component/home_admin";
 import Login from "./component/User/Login";
 import NavBar2 from "./component/common/Navbar2";
-import AddGroupe from "./component/Professor/AddGroupe";
 import ListGroupe from "./component/Professor/ListGroupe";
 import AddEtudiant from "./component/Etudiant/AddEtudiant"
 import ViewEtudiant from "./component/Etudiant/EtudiantView"
 import EditEtudiant from "./component/Etudiant/EditEtudiant";
 import Profile from "./component/Etudiant/EtudiantProfile"
+import Dashboard from "./component/Professor/Dashboard";
+import Tooth from "./component/Professor/Tooth";
+import PW from "./component/PW/PWs";
 
 
 function App() {
 	const [userRole, setUserRole] = useState(null);
+	const [professorId, setId] = useState(null);
+
+
 	return (
 		<main className="container mt-5">
 
@@ -43,11 +46,20 @@ function App() {
 					<Route
 						exact
 						path="/"
-						element={<Login setUserRole={setUserRole} />}></Route>
+						element={<Login setUserRole={setUserRole} setId={setId} />}></Route>
 					<Route
 						exact
-						path="/add-groupe"
-						element={<AddGroupe />}></Route>
+						path="/Home"
+						element={<Home id={professorId} />}></Route>
+					<Route
+						exact
+						path="/tooth"
+						element={<Tooth />}></Route>
+					<Route
+						exact
+						path="/pw"
+						element={<PW />}></Route>
+
 					<Route
 						exact
 						path="/etudiant-profile/:id"
@@ -56,19 +68,17 @@ function App() {
 					<Route
 						exact
 						path="/view-groupe"
-						element={<ListGroupe />}></Route>
+						element={<ListGroupe id={professorId} />}></Route>
 					<Route
 						exact
-						path="/edit-etudiant/:id"
-						element={<EditEtudiant />}></Route>
+						path="/dash"
+						element={<Dashboard id={professorId} />}></Route>
+
 					<Route
 						exact
 						path="/view-Etudiant"
-						element={<ViewEtudiant />}></Route>
-					<Route
-						exact
-						path="/add-Etudiant"
-						element={<AddEtudiant />}></Route>
+						element={<ViewEtudiant id={professorId} />}></Route>
+
 					<Route
 						exact
 						path="/admin"

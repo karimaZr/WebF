@@ -1,6 +1,7 @@
 package com.example.dental.repositories;
 
 import com.example.dental.entities.PW;
+import com.example.dental.entities.Student;
 import com.example.dental.entities.StudentPW;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

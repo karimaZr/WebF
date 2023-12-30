@@ -12,5 +12,12 @@ import java.util.List;
 @Repository
 
 public interface StudentRepository  extends JpaRepository<Student,Integer> {
+    @Query("SELECT s FROM Student s JOIN s.groupe g JOIN g.professor p WHERE p.id = :professorId")
+    List<Student> findStudentsByProfessor(@Param("professorId") int professorId);
+    @Query("SELECT s.groupe.pws FROM Student s WHERE s.id = :studentId")
+    List<PW> findPwByStudent(@Param("studentId") int studentId);
+
+    @Query("SELECT s FROM Student s WHERE s.groupe.id = :groupId")
+    List<Student> findStudentsByGroup(@Param("groupId") int groupId);
 
 }

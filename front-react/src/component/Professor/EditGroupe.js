@@ -1,171 +1,110 @@
-import React, {
-	useEffect,
-	useState,
-} from "react";
+import React, { useState, useEffect, useParams } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
 
-import {
-	Link,
-	useNavigate,
-	useParams,
-} from "react-router-dom";
-
-const EditStudent = () => {
-	let navigate = useNavigate();
-
-	const { id } = useParams();
-
-	const [professor, setProfesseur] = useState({
-		userName: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        image: "",
-        grade: ""
-	});
-	const {
-		userName,
-        password,
-        firstName,
-        lastName,
-        image,
-        grade
-	} = professor;
-
-	useEffect(() => {
-		loadProfesseur();
+const EditGroupe = ({ id, showModal, handleClose }) => {
+    // State to manage the form data
+    const [groupData, setGroupData] = useState({
+        code: "",
+        year: ""
+    });
+    useEffect(() => {
+		loadGroup();
 	}, []);
 
-	const loadProfesseur = async () => {
-		const result = await axios.get(
-			`http://localhost:8083/groupe/${id}`
-		);
-		setProfesseur(result.data);
-	};
+    const loadGroup = async () => {
+        try {
+            const result = await axios.get(`http://localhost:8083/groupe/${id}`);
+            setGroupData(result.data);
+        } catch (error) {
+            console.error("Error loading group:", error);
+        }
+    };
+    // Handler for form input changes
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setGroupData({
+            ...groupData,
+            [name]: value
+        });
+    };
 
-	const handleInputChange = (e) => {
-		setProfesseur({
-			...professor,
-			[e.target.name]: e.target.value,
-		});
-	};
-	const updateProfessofa = async (e) => {
-		e.preventDefault();
-		await axios.put(
-			`http://localhost:8083/groupe/${id}`,
-			professor
-		);
-		navigate("/view-groupe");
-	};
+    const updateGroup = async (e) => {
+        e.preventDefault();
 
-	return (
-		<div className="col-sm-8 py-2 px-5 offset-2 shadow">
-			<h2 className="mt-5"> Edit Group</h2>
-			<form onSubmit={(e) => updateProfessofa(e)}>
-				<div className="input-group mb-5">
-					<label
-						className="input-group-text"
-						htmlFor="fristName">
-						First Name
-					</label>
-					<input
-						className="form-control col-sm-6"
-						type="text"
-						name="firstName"
-						id="firstName"
-						required
-						value={firstName}
-						onChange={(e) => handleInputChange(e)}
-					/>
-				</div>
+        try {
+            await axios.put(`http://localhost:8083/groupe/${id}`, groupData);
 
-				<div className="input-group mb-5">
-					<label
-						className="input-group-text"
-						htmlFor="lastName">
-						Last Name
-					</label>
-					<input
-						className="form-control col-sm-6"
-						type="text"
-						name="lastName"
-						id="lastName"
-						required
-						value={lastName}
-						onChange={(e) => handleInputChange(e)}
-					/>
-				</div>
-                <div className="input-group mb-5">
-					<label
-						className="input-group-text"
-						htmlFor="password">
-						Password
-					</label>
-					<input
-						className="form-control col-sm-6"
-						type="text"
-						name="password"
-						id="password"
-						required
-						value={password}
-						onChange={(e) => handleInputChange(e)}
-					/>
+            // Close the modal after successful submission
+            handleClose();
+
+        } catch (error) {
+            console.error("Error update group:", error);
+        }
+    };
+
+
+    return (
+        <Modal show={showModal} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Edit Group</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form onSubmit={(e) => updateGroup(e)}>
+                    <div className="input-group mb-5">
+                        <label className="input-group-text" htmlFor="code">
+                            Group Code
+                        </label>
+                        <input
+                            className="form-control col-sm-6"
+                            type="text"
+                            name="code"
+                            id="code"
+                            required
+                            value={groupData.code}
+                            onChange={(e) => handleInputChange(e)}
+                        />
                     </div>
 
-				<div className="input-group mb-5">
-					<label
-						className="input-group-text"
-						htmlFor="userName">
-						UserName
-					</label>
-					<input
-						className="form-control col-sm-6"
-						type="text"
-						name="userName"
-						id="userName"
-						required
-						value={userName}
-						onChange={(e) => handleInputChange(e)}
-					/>
-				</div>
-				<div className="input-group mb-5">
-					<label
-						className="input-group-text"
-						htmlFor="grade">
-						Grade
-					</label>
-					<input
-						className="form-control col-sm-6"
-						type="text"
-						name="grade"
-						id="grade"
-						required
-						value={grade}
-						onChange={(e) => handleInputChange(e)}
-					/>
-				</div>
+                    <div className="input-group mb-5">
+                        <label className="input-group-text" htmlFor="year">
+                            Academic Year
+                        </label>
+                        <input
+                            className="form-control col-sm-6"
+                            type="text"
+                            name="year"
+                            id="year"
+                            required
+                            value={groupData.year}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                    </div>
 
-				<div className="row mb-5">
-					<div className="col-sm-2">
-						<button
-							type="submit"
-							className="btn btn-outline-success btn-lg">
-							Save
-						</button>
-					</div>
-
-					<div className="col-sm-2">
-						<Link
-							to={"/view-prof"}
-							type="submit"
-							className="btn btn-outline-warning btn-lg">
-							Cancel
-						</Link>
-					</div>
-				</div>
-			</form>
-		</div>
-	);
+                    <div className="row mb-5">
+                        <div className="col-sm-2">
+                            <button
+                                type="submit"
+                                className="btn btn-outline-success btn-lg"
+                            >
+                                Save
+                            </button>
+                        </div>
+                        <div className="col-sm-2">
+                            <Button
+                                variant="outline-warning"
+                                size="lg"
+                                onClick={handleClose}
+                            >
+                                Cancel
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal.Body>
+        </Modal>
+    );
 };
 
-export default EditStudent; 
+export default EditGroupe;

@@ -2,6 +2,7 @@ package com.example.dental.controllers;
 
 import com.example.dental.entities.PW;
 import com.example.dental.entities.StudentPW;
+import com.example.dental.entities.StudentPWPk;
 import com.example.dental.repositories.StudentPwRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+
 @RequestMapping("/studentpw")
 public class StudentPwController {
 
@@ -36,11 +37,14 @@ public class StudentPwController {
     }
 
     // Exemple d'endpoint pour ajouter un nouveau StudentPW
-    @PostMapping
-    public StudentPW addStudentPW(@RequestBody StudentPW studentPW) {
-        return studentPWRepository.save(studentPW);
-    }
+    @PostMapping("/add/{studentId}/{pwId}")
+    public ResponseEntity<Object> create(@RequestParam int studentId,@RequestParam int pwId,@RequestBody StudentPW  studentPW){
+        StudentPWPk studentPWPK = new StudentPWPk(studentId,pwId);
+        studentPW.setId(studentPWPK);
 
+        studentPWRepository.save(studentPW);
+        return ResponseEntity.ok(studentPW);
+    }
     // Exemple d'endpoint pour mettre à jour un StudentPW existant
     @PutMapping("/{id}")
     public StudentPW updateStudentPW(@PathVariable int id, @RequestBody StudentPW updatedStudentPW) {
@@ -57,6 +61,7 @@ public class StudentPwController {
             return null; // Ou lancez une exception appropriée si l'entité n'est pas trouvée
         }
     }
+
 
     // Exemple d'endpoint pour supprimer un StudentPW par son ID
     @DeleteMapping("/{id}")

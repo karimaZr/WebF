@@ -15,7 +15,7 @@ const EditStudent = () => {
 
 	const { id } = useParams();
 
-	const [professor, setProfesseur] = useState({
+	const [professor, setEtudiant] = useState({
 		userName: "",
         password: "",
         firstName: "",
@@ -33,18 +33,18 @@ const EditStudent = () => {
 	} = professor;
 
 	useEffect(() => {
-		loadProfesseur();
+		loadEtudiant();
 	}, []);
 
-	const loadProfesseur = async () => {
+	const loadEtudiant = async () => {
 		const result = await axios.get(
 			`http://localhost:8083/professor/${id}`
 		);
-		setProfesseur(result.data);
+		setEtudiant(result.data);
 	};
 
 	const handleInputChange = (e) => {
-		setProfesseur({
+		setEtudiant({
 			...professor,
 			[e.target.name]: e.target.value,
 		});

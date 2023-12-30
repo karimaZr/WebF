@@ -23,12 +23,11 @@ public class PW {
     private  int id;
     private String title;
     private String objectif;
-    private String docs;
+    @Lob
+    @Column(name = "docs", columnDefinition = "LONGBLOB")
+    private byte [] docs;
     @ManyToOne
     private  Tooth tooth;
-    @ManyToMany
-    private List<Groupe> groupes;
-    @OneToMany(mappedBy = "pw")
-    private List<StudentPW> studentPWS;
+
 }
 

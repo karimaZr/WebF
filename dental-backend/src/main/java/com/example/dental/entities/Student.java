@@ -17,11 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-
 public class Student extends User{
     private String number;
     @ManyToOne
+    @JsonIgnoreProperties("students")
     private Groupe groupe;
     @OneToMany(mappedBy = "student")
     private List<StudentPW> studentPWS;

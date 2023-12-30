@@ -43,6 +43,16 @@ const NavBar = () => {
                         Gestion Etudiant
 
                     </Link>
+                    <Link to={"pw"} className="nav-link">
+
+                        Gestion PW
+
+                    </Link>
+                    <Link to={"tooth"} className="nav-link">
+
+                        Gestion Tooth
+
+                    </Link>
                 </Nav>
                 <button
                     className="navbar-toggler"

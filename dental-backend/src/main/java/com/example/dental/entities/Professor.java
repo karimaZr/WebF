@@ -16,8 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Professor extends User{
-    @OneToMany(mappedBy = "professor",fetch= FetchType.EAGER)
-    private List<Groupe> groups;
     private String grade;
 
 }

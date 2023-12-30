@@ -14,7 +14,6 @@ const AddProfesseur = () => {
 		password: "",
 		firstName: "",
 		lastName: "",
-		
 		grade: ""
 	});
 	const {

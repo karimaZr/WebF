@@ -1,7 +1,10 @@
 package com.example.dental.controllers;
 
-import com.example.dental.entities.Groupe;
+import com.example.dental.entities.*;
 import com.example.dental.repositories.GroupeRepository;
+import com.example.dental.repositories.PWRepository;
+import com.example.dental.repositories.ProfessorRepository;
+import com.example.dental.repositories.StudentRepository;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,13 +12,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+
 @RequestMapping("/groupe")
 public class GroupeController {
     @Autowired
     GroupeRepository groupeRepository;
+    @Autowired
+    StudentRepository studentRepository;
+    @Autowired
+    ProfessorRepository professorRepository;
+    @Autowired
+    PWRepository pwRepository;
     @GetMapping
     public List<Groupe> findGroupes(){
 
@@ -31,10 +42,54 @@ public class GroupeController {
 
         }
     }
-    @PostMapping
-    public Groupe createGroupe(@RequestBody Groupe groupe){
-        groupe.setId(0);
-        return groupeRepository.save(groupe);
+    @GetMapping("/student/{id}")
+    public ResponseEntity<?> getByStudent(@PathVariable int id){
+        Student student = studentRepository.findById(id).orElse(null);
+        if(student == null)
+            return new ResponseEntity<>(Map.of("message","student does not exist"), HttpStatus.NOT_FOUND);
+        else
+            return ResponseEntity.ok(groupeRepository.findGroupesByStudents(student));
+    }
+    @GetMapping("/professor/{id}")
+    public ResponseEntity<?> getByProfessor(@PathVariable int id){
+        Professor  professor= professorRepository.findById(id).orElse(null);
+        if(professor == null)
+            return new ResponseEntity<>(Map.of("message","prof does not exist"), HttpStatus.NOT_FOUND);
+        else
+            return ResponseEntity.ok(groupeRepository.findGroupesByProfessor(professor));
+    }
+    @PostMapping("/add/{id}")
+    public ResponseEntity<Object> create(@RequestBody Groupe groupe,@PathVariable int id){
+        Professor user = professorRepository.findById(id).orElse(null);
+        if(user == null)
+            return ResponseEntity.ok(Map.of("message","user does not exist"));
+        else{
+            groupe.setProfessor(user);
+            groupeRepository.save(groupe);
+            return ResponseEntity.ok(Map.of("message","group created successfully"));
+        }
+
+    }
+    @PostMapping("/pw/{groupId}/{pwId}")
+    public ResponseEntity<Object> addPwtoGroup(@PathVariable int groupId, @PathVariable int pwId){
+        Groupe group = groupeRepository.findById(groupId).orElse(null);
+        PW pw = pwRepository.findById(pwId).orElse(null);
+        if(group == null || pw ==null){
+            return new ResponseEntity<>(Map.of("message","PW or group does not exist"), HttpStatus.NOT_FOUND);
+        }
+        else{
+            group.getPws().add(pw);
+            groupeRepository.save(group);
+            return ResponseEntity.ok(group);
+        }
+    }
+    @GetMapping("/pw/{id}")
+    public ResponseEntity<?> getByPw(@PathVariable int id){
+        PW pw =  pwRepository.findById(id).orElse(null);
+        if(pw == null)
+            return new ResponseEntity<>(Map.of("message","PW does not exist"), HttpStatus.NOT_FOUND);
+        else
+            return ResponseEntity.ok(groupeRepository.findGroupesByPws(pw));
     }
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateGroupe(@PathVariable int id,@RequestBody Groupe newGroupe){
