@@ -23,14 +23,13 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 ### Docker 
-docker-compose build
-docker-compose up
+
+docker pull karzr/docker_images:web_backend\
+docker pull karzr/docker_images:front_dental
 
 ### Démo 
 
-https://github.com/karimaZr/WebF/assets/128175856/0df90ed5-f4a0-4ead-adf1-406dc3ec60e0
-
-
+https://github.com/karimaZr/WebF/assets/128175856/4e55dc71-b0a1-444d-b013-ad2ca7d0ef62
 
 
 
